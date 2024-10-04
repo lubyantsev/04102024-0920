@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Индивидуальные расписания</title>
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Укажите путь к файлу -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin: auto;
+            width: 80%;
+        }
+
+        .schedules {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .schedule {
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Индивидуальные расписания</h1>
+    <h2>Новое расписание</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ schedule_form.as_p }}
+        <button type="submit">Создать</button>
+    </form>
+
+    <h3>Введите Пароль расписания для просмотра и редактирования ранее созданного расписания</h3>
+    <form method="post" action="{% url 'open_schedule' %}">
+        {% csrf_token %}
+        <input type="text" name="password" placeholder="Введите пароль">
+        <button type="submit">Открыть расписание</button>
+    </form>
+
+    <div class="schedules">
+        {% for schedule in schedules %}
+        <div class="schedule" id="schedule-{{ schedule.id }}">
+            <h4>Расписание {{ schedule.id }}</h4>
+            <button onclick="createEvent({{ schedule.id }})">Создать событие</button>
+            <div id="events-{{ schedule.id }}">
+                {% for event in schedule.events.all %}
+                <button>{{ event.time }} - {{ event.place }} - {{ event.participant_name }}</button>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function createEvent(scheduleId) {
+        // Ваша логика для создания события
+    }
+</script>
+</body>
+</html>

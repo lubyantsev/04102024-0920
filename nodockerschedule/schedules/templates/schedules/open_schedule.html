@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends 'base.html' %}
+
+        {% block content %}
+        <h1>Открыть расписание</h1>
+
+        <form method="post">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit">Открыть расписание</button>
+        </form>
+
+        {% if schedule %}
+        <h2>Расписание: {{ schedule.name }}</h2>
+        <ul>
+        {% for event in events %}
+        <li>{{ event.name }} - {{ event.date }}</li>
+        {% endfor %}
+        </ul>
+
+        {% if not events %}
+        <p>Нет сохраненных событий. <a href="{% url 'create_event' schedule.id %}">Создать новое событие</a></p>
+        {% endif %}
+        {% endif %}
+        {% endblock %}</title>
+</head>
+<body>
+
+</body>
+</html>
